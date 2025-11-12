@@ -1,0 +1,16 @@
+{
+  "name": "youtube-e2e-playwright",
+  "version": "1.0.0",
+  "description": "YouTube end-to-end Playwright test using Node test runner",
+  "scripts": {
+    "test:e2e": "npx playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  },
+  "main": "youtube.test.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

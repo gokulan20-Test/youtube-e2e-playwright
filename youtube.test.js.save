@@ -1,0 +1,42 @@
+import { test, expect } from "@playwright/tesimport fs from "fs";
+
+test("YouTube E2E test", async ({ page }) => {
+  // Go to YouTube
+  await page.goto("https://www.youtube.com/");
+  
+  // Accept cookies if shown
+  const acceptBtn = page.locator('button:has-text("Accept all")');
+  if (await acceptBtn.isVisible()) await acceptBtn.click();
+
+  // Search for a video
+  await page.fill('input#search', "QA automation");
+  await page.click('button#search-icon-legacy');
+  await page.waitForTimeout(2000);
+
+  // Verify results
+  const results = await page.locator('ytd-video-renderer').count();
+  expect(results).toBeGreaterThan(0);
+
+  // Click first video
+  await page.locator('ytd-video-renderer').first().click();
+  await page.waitForTimeout(5000);
+
+  // Play/Pause
+  await page.keyboard.press("k"); // pause
+  await page.waitForTimeout(2000);
+  await page.keyboard.press("k"); // play again
+  await page.waitForTimeout(2000);
+
+  // Seek ahead
+  await page.keyboard.press("l");
+  await page.waitForTimeout(2000);
+
+  // Screenshot
+  await page.screenshot({ path: "screenshots/video_playing.png" });
+  expect(fs.existsSync("screenshots/video_playing.png")).toBeTruthy();
+
+  // Check title
+  const title = await page.locator("h1.title").innerText();
+  expect(title.trim().length).toBeGreaterThan(0);
+});
+
